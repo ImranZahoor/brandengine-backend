@@ -19,6 +19,8 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
+
 from users.views import (
     CustomRegisterView,
     CustomLoginView,
@@ -33,6 +35,12 @@ urlpatterns = [
     path("api/auth/registration", CustomRegisterView.as_view(), name="register"),
     path("api/auth/login", CustomLoginView.as_view(), name="rest_login"),
     path("api/auth/password/reset", PasswordResetView.as_view(), name="rest_login"),
+    path("api/schema/", SpectacularAPIView.as_view(), name="api-schema"),
+    path(
+        "api/docs/",
+        SpectacularSwaggerView.as_view(url_name="api-schema"),
+        name="api-docs",
+    ),
     path(
         "api/auth/password/reset/confirm/<str:uidb64>/<str:token>",
         PasswordResetConfirmView.as_view(),
@@ -48,6 +56,6 @@ urlpatterns = [
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
-admin.site.site_header = "Brand"
-admin.site.site_title = "Brand Admin Portal"
-admin.site.index_title = "Welcome to Brand Admin Portal"
+admin.site.site_header = "Brand Search Engine"
+admin.site.site_title = "Brand Search Engine Admin Portal"
+admin.site.index_title = "Welcome to Brand Search Engine Admin Portal"

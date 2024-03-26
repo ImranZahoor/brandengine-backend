@@ -9,9 +9,9 @@ class StaticRootS3Boto3Storage(S3Boto3Storage):
 
 
 class MediaRootS3Boto3Storage(S3Boto3Storage):
-    location = settings.AWS_PUBLIC_MEDIA_LOCATION
+    location = "media"
     file_overwrite = False
-    default_acl = "public-read"
+    # default_acl = "public-read"
 
     # default_acl = None  # Remove the ACL setting
 
@@ -22,3 +22,9 @@ class PrivateMediaStorage(S3Boto3Storage):
     file_overwrite = False
     custom_domain = False
     default_acl = "private"
+
+
+class PublicMediaStorage(S3Boto3Storage):
+    location = "media"
+    file_overwrite = False
+    default_acl = "public-read"
