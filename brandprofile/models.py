@@ -40,9 +40,13 @@ class BrandProfile(Timestamp):
         ),
     )
     phone = models.CharField(validators=[phone_regex], max_length=17, blank=True)
-    email = models.EmailField()
+    email = models.EmailField(null=True, blank=True)
     owner = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="owner_brand"
+        User,
+        on_delete=models.CASCADE,
+        related_name="owner_brand",
+        null=True,
+        blank=True,
     )
 
     class Meta:
