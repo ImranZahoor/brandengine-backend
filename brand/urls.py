@@ -19,6 +19,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
+from django.views.generic import TemplateView
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
 from users.views import (
@@ -30,6 +31,7 @@ from users.views import (
 from dj_rest_auth.views import PasswordResetView, PasswordResetConfirmView
 
 urlpatterns = [
+    path("", TemplateView.as_view(template_name="index.html"), name="home"),
     path("api/auth/", include("dj_rest_auth.urls")),
     path("accounts/", include("allauth.urls")),
     path("api/auth/registration", CustomRegisterView.as_view(), name="register"),

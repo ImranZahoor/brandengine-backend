@@ -20,7 +20,7 @@ class PrivateMediaStorage(S3Boto3Storage):
     location = settings.AWS_PRIVATE_MEDIA_LOCATION
     # default_acl = None  # Remove the ACL setting
     file_overwrite = False
-    custom_domain = False
+    # custom_domain = False
     default_acl = "private"
 
 
