@@ -6,9 +6,36 @@
     <style>
         body {
             background-color: black;
-            color: white; /* Optionally, change text color to white for better visibility */
+            color: white;
             text-align: center;
             padding-top: 20%;
+        }
+        .button-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            text-align: center;
+            text-decoration: none;
+            outline: none;
+            color: #ffffff;
+            background-color: #001f3f; /* Navy blue background */
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 9px #999;
+        }
+        .button:hover {
+            background-color: #003366; /* Darker navy blue on hover */
+        }
+        .button:active {
+            background-color: #003366; /* Darker navy blue when active */
+            box-shadow: 0 5px #666;
+            transform: translateY(4px);
         }
     </style>
 </head>
@@ -16,5 +43,8 @@
 <h1>
     Brand Search Engine API
 </h1>
+<div class="button-container">
+    <a href="{% url 'api-docs' %}" class="button">Go to API Docs</a>
+</div>
 </body>
 </html>
