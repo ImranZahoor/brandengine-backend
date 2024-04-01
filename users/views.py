@@ -1,5 +1,8 @@
+from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
+from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 from dj_rest_auth.views import LoginView
 from dj_rest_auth.registration.views import RegisterView, SocialLoginView
+from django.conf import settings
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.decorators import action
@@ -140,8 +143,17 @@ user_detail_view = UserDetailView.as_view()
 from allauth.socialaccount.providers.facebook.views import FacebookOAuth2Adapter
 from dj_rest_auth.registration.views import SocialLoginView
 from allauth.socialaccount.providers.instagram.views import InstagramOAuth2Adapter
+
+
 class FacebookLogin(SocialLoginView):
     adapter_class = FacebookOAuth2Adapter
 
+
 class InstagramLogin(SocialLoginView):
     adapter_class = InstagramOAuth2Adapter
+
+
+class GoogleLoginView(SocialLoginView):
+    adapter_class = GoogleOAuth2Adapter
+    callback_url = settings.LOGIN_REDIRECT_URL
+    client_class = OAuth2Client

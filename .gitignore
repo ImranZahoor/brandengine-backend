@@ -98,7 +98,8 @@ __pycache__/
 venv
 .env
 /celerybeat-schedule
-
+deploy.sh
+brandsearch.pem
 .vscode
 
 # Elastic Beanstalk Files

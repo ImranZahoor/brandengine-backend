@@ -27,6 +27,7 @@ from users.views import (
     CustomLoginView,
     FacebookLogin,
     InstagramLogin,
+    GoogleLoginView,
 )
 from dj_rest_auth.views import PasswordResetView, PasswordResetConfirmView
 
@@ -49,6 +50,7 @@ urlpatterns = [
         name="password_reset_confirm",
     ),
     path("api/dj-rest-auth/facebook/", FacebookLogin.as_view(), name="fb_login"),
+    path("api/dj-rest-auth/google/", GoogleLoginView.as_view(), name="google_login"),
     path("api/dj-rest-auth/instagram/", InstagramLogin.as_view(), name="insta_login"),
     path("api/users/", include("users.urls")),
     path("highbit/admin/", admin.site.urls),
