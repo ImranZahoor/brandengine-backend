@@ -155,5 +155,5 @@ class InstagramLogin(SocialLoginView):
 
 class GoogleLoginView(SocialLoginView):
     adapter_class = GoogleOAuth2Adapter
-    callback_url = settings.LOGIN_REDIRECT_URL
+    callback_url = "https://localhost:8000/"
     client_class = OAuth2Client
