@@ -1,4 +1,6 @@
+import warnings
 from typing import Any
+from django.shortcuts import resolve_url
 
 from allauth.account.adapter import DefaultAccountAdapter
 from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
@@ -94,6 +96,26 @@ class AccountAdapter(DefaultAccountAdapter):
             msg = EmailMessage(subject, bodies["html"], from_email, to, headers=headers)
             msg.content_subtype = "html"  # Main content is now text/html
         return msg
+
+    def get_login_redirect_url(self, request):
+        """
+        Returns the default URL to redirect to after logging in.  Note
+        that URLs passed explicitly (e.g. by passing along a `next`
+        GET parameter) take precedence over the value returned here.
+        """
+        assert request.user.is_authenticated
+        url = getattr(settings, "LOGIN_REDIRECT_URLNAME", None)
+        if url:
+            warnings.warn(
+                "LOGIN_REDIRECT_URLNAME is deprecated, simply"
+                " use LOGIN_REDIRECT_URL with a URL name",
+                DeprecationWarning,
+            )
+        else:
+            url = settings.LOGIN_REDIRECT_URL
+        print(url)
+        return resolve_url(url)
+
 
 class SocialAccountAdapter(DefaultSocialAccountAdapter):
     """
