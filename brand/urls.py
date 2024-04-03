@@ -28,8 +28,9 @@ from users.views import (
     FacebookLogin,
     InstagramLogin,
     GoogleLoginView,
-    UserRedirectView,
 )
+
+from users.redirect import UserRedirectView
 from dj_rest_auth.views import PasswordResetView, PasswordResetConfirmView
 
 urlpatterns = [
