@@ -25,6 +25,6 @@ hooks:
 artifacts:
   files:
     - '**/*'
-  base-directory: base_dir
+  base-directory: /home/ubuntu/BrandSearch
   name: dev-backend-build-artifact-brand-search
   discard-paths: no
