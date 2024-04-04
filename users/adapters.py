@@ -113,7 +113,6 @@ class AccountAdapter(DefaultAccountAdapter):
             )
         else:
             url = settings.LOGIN_REDIRECT_URL
-        print(url)
         return resolve_url(url)
 
 
