@@ -13,7 +13,7 @@ trap 'exec 2>&4 1>&3' 0 1 2 3
 exec 1>/home/ubuntu/BrandSearch-logs/after-install.log 2>&1
 
 AC_DIR="/home/ubuntu/BrandSearch"
-AC_ENV_DIR="/home/ubuntu/BrandSearch-env"
+AC_ENV_DIR="/home/ubuntu/BrandSearch/venv"
 
 cd ${AC_DIR}
 
