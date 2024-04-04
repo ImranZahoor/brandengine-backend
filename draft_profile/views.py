@@ -121,6 +121,6 @@ class MigrateBrands(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(
-            {"data": serializer.data, "message": "Data Migrated Successfully"},
+            {"data": serializer.data, "message": "Data Migrated Successfully."},
             status=status.HTTP_200_OK,
         )
