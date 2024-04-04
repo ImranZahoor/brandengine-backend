@@ -23,6 +23,8 @@ class DraftProfileSerializer(serializers.ModelSerializer):
             "facebook_followers",
             "category",
             "result_number",
+            "review_status",
+            "reviewed_by",
         )
 
 

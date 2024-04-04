@@ -6,6 +6,11 @@ from django.utils.translation import gettext_lazy as _
 
 User = get_user_model()
 
+REVIEW_STATUS_CHOICES = [
+    ("pending", "Pending"),
+    ("approved", "Approved"),
+]
+
 
 class DraftProfile(Timestamp):
     title = models.CharField(max_length=255, blank=False, null=False)
@@ -20,6 +25,16 @@ class DraftProfile(Timestamp):
     insta_followers = models.IntegerField(null=True, blank=True)
     facebook_followers = models.IntegerField(null=True, blank=True)
     result_number = models.CharField(max_length=255, blank=True, null=True)
+    review_status = models.CharField(
+        max_length=20, choices=REVIEW_STATUS_CHOICES, default="pending"
+    )
+    reviewed_by = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="draft_reviewer",
+        null=True,
+        blank=True,
+    )
 
     class Meta:
         verbose_name_plural = "Draft Profiles"
