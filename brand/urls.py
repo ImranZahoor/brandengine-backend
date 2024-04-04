@@ -59,6 +59,7 @@ urlpatterns = [
     path("api/", include("ratings.urls")),
     path("api/", include("followertrack.urls")),
     path("api/", include("brandprofile.urls")),
+    path("api/", include("draft_profile.urls")),
     path("~redirect/", view=UserRedirectView.as_view(), name="redirect"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

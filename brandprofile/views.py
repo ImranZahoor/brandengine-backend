@@ -1,7 +1,6 @@
 import json
 
-from rest_framework import viewsets
-from rest_framework.decorators import action
+from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -25,6 +24,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
 
 
 class UploadCSVView(APIView):
+    permission_classes = [IsAuthenticated]
 
     def post(self, request, format=None):
         form = FileUploadForm(request.POST, request.FILES)
@@ -83,7 +83,10 @@ class UploadCSVView(APIView):
                 else:
                     category = Category.objects.get_or_create(name=entry["category"])
                     if not category:
-                        return Response({"errors": entry["category"]}, status=400)
+                        return Response(
+                            {"errors": entry["category"]},
+                            status=status.HTTP_400_BAD_REQUEST,
+                        )
                     new_brand = BrandProfile.objects.create(
                         name=entry["company name"],
                         website=entry["website"],
@@ -95,4 +98,6 @@ class UploadCSVView(APIView):
                         owner_id=request.user.id,
                     )
                     new_brand.save()
-            return Response({"Data Added Successfully"}, status=200)
+            return Response(
+                {"message": "Data Added Successfully"}, status=status.HTTP_201_CREATED
+            )
