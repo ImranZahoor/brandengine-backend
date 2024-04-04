@@ -22,9 +22,9 @@ hooks:
     - location: scripts/application-start
       timeout: 200
       runas: root
-#artifacts:
-#  files:
-#    - '**/*'
+artifacts:
+  files:
+    - '**/*'
 #  base-directory: django-project-pipel/BuildArtif
-#  name: dev-backend-build-artifact-brand-search
-#  discard-paths: no
+  name: dev-backend-build-artifact-brand-search
+  discard-paths: no
