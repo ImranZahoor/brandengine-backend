@@ -111,7 +111,7 @@ class UploadCSVView(APIView):
 
 
 class MigrateBrands(APIView):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     serializer_class = MigrateBrandSerializer
 
     def post(self, request, format=None):
