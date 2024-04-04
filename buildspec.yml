@@ -25,6 +25,6 @@ hooks:
 artifacts:
   files:
     - '**/*'
-  base-directory: SourceArti
-  name: dev-backend-build-artifact-brand-search
-  discard-paths: no
+#  base-directory: SourceArti
+#  name: dev-backend-build-artifact-brand-search
+#  discard-paths: no
