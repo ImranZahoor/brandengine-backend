@@ -106,7 +106,7 @@ class UploadCSVView(APIView):
                     )
                     new_draft.save()
             return Response(
-                {"message": "Data Added Successfully"}, status=status.HTTP_200_OK
+                {"message": "Data Added Successfully."}, status=status.HTTP_200_OK
             )
 
 
