@@ -10,11 +10,13 @@ from draft_profile.models import DraftProfile
 import pandas as pd
 
 from draft_profile.serializers import DraftProfileSerializer, MigrateBrandSerializer
+from utils.pagination import CustomPageNumberPagination
 
 
 class DraftProfileViewSet(viewsets.ModelViewSet):
     queryset = DraftProfile.objects.all()
     serializer_class = DraftProfileSerializer
+    pagination_class = CustomPageNumberPagination
     permission_classes = [IsAuthenticated]
 
     def migrate_brands(self, request):

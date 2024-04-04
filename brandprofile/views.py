@@ -10,8 +10,11 @@ from brandprofile.models import BrandProfile, Category
 from brandprofile.serializers import BrandProfileSerializer, CategorySerializer
 import pandas as pd
 
+from utils.pagination import CustomPageNumberPagination
+
 
 class BrandProfileViewSet(viewsets.ModelViewSet):
+    pagination_class = CustomPageNumberPagination
     queryset = BrandProfile.objects.all()
     serializer_class = BrandProfileSerializer
     permission_classes = [IsAuthenticated]
