@@ -18,11 +18,11 @@ class DraftProfileViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def migrate_brands(self, request):
-        # serializer = MigrateBrandSerializer(data=request.data)
-        # serializer.is_valid(raise_exception=True)
-        # serializer.save()
+        serializer = MigrateBrandSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
         return Response(
-            {"message": "Data Migrated Successfully"},
+            {"data": serializer.data, "message": "Data Migrated Successfully"},
             status=status.HTTP_201_CREATED,
         )
 
@@ -113,10 +113,8 @@ class UploadCSVView(APIView):
 class MigrateBrands(APIView):
     permission_classes = [IsAuthenticated]
 
-    @staticmethod
-    def post(request, format=None):
-        data = request.data
-        serializer = MigrateBrandSerializer(data=data)
+    def post(self, request, format=None):
+        serializer = MigrateBrandSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(
