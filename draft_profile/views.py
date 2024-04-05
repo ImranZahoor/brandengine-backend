@@ -110,6 +110,10 @@ class UploadCSVView(APIView):
             return Response(
                 {"message": "Data Added Successfully."}, status=status.HTTP_200_OK
             )
+        else:
+            return Response(
+                {"message": "Invalid Input."}, status=status.HTTP_400_BAD_REQUEST
+            )
 
 
 class MigrateBrands(APIView):
