@@ -1,11 +1,10 @@
 import json
 
+from drf_spectacular.utils import extend_schema
 from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
-from brandprofile.forms import FileUploadForm
 from draft_profile.models import DraftProfile
 import pandas as pd
 
@@ -35,9 +34,19 @@ class DraftProfileViewSet(viewsets.ModelViewSet):
 
 class UploadCSVView(APIView):
     permission_classes = [IsAuthenticated]
+    serializer_class = FileUploadSerializer
 
+    @extend_schema(
+        operation_id="upload_file",
+        request={
+            "multipart/form-data": {
+                "type": "object",
+                "properties": {"file": {"type": "string", "format": "binary"}},
+            }
+        },
+    )
     def post(self, request, format=None):
-        serializer = FileUploadSerializer(data=request.data)
+        serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             file = serializer.validated_data["file"]
             errors = []

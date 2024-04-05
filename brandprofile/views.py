@@ -1,4 +1,6 @@
 import json
+
+from drf_spectacular.utils import extend_schema
 from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -27,6 +29,15 @@ class CategoryViewSet(viewsets.ModelViewSet):
 class UploadCSVView(APIView):
     permission_classes = [IsAuthenticated]
 
+    @extend_schema(
+        operation_id="upload_file",
+        request={
+            "multipart/form-data": {
+                "type": "object",
+                "properties": {"file": {"type": "string", "format": "binary"}},
+            }
+        },
+    )
     def post(self, request, format=None):
         form = FileUploadForm(request.POST, request.FILES)
         if form.is_valid():
