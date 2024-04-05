@@ -47,3 +47,16 @@ class MigrateBrandSerializer(serializers.Serializer):
                 # owner = self.request.user
                 website=profile.url,
             )
+
+
+class FileUploadSerializer(serializers.Serializer):
+    file = serializers.FileField(required=True)
+
+    def validate_file(self, value):
+        """
+        Check if the uploaded file is in an acceptable format.
+        """
+        file_extension = value.name.split(".")[-1]
+        if file_extension.lower() not in ["csv", "xlsx"]:
+            raise serializers.ValidationError("Only CSV or Excel files are supported.")
+        return value

@@ -9,7 +9,11 @@ from brandprofile.forms import FileUploadForm
 from draft_profile.models import DraftProfile
 import pandas as pd
 
-from draft_profile.serializers import DraftProfileSerializer, MigrateBrandSerializer
+from draft_profile.serializers import (
+    DraftProfileSerializer,
+    MigrateBrandSerializer,
+    FileUploadSerializer,
+)
 from utils.pagination import CustomPageNumberPagination
 
 
@@ -33,11 +37,9 @@ class UploadCSVView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, format=None):
-        form = FileUploadForm(request.POST, request.FILES)
-        if form.is_valid():
-            file = form.cleaned_data["file"]  # Get the uploaded file from the form
-            if not file:
-                return Response({"error": "No file uploaded"}, status=400)
+        serializer = FileUploadSerializer(data=request.data)
+        if serializer.is_valid():
+            file = serializer.validated_data["file"]
             errors = []
             columns = [
                 "Level 3 Category",
@@ -111,9 +113,7 @@ class UploadCSVView(APIView):
                 {"message": "Data Added Successfully."}, status=status.HTTP_200_OK
             )
         else:
-            return Response(
-                {"message": "Invalid Input."}, status=status.HTTP_400_BAD_REQUEST
-            )
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class MigrateBrands(APIView):
