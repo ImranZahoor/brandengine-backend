@@ -24,7 +24,7 @@ class BrandProfile(Timestamp):
         Category, on_delete=models.CASCADE, related_name="brand_category"
     )
     search_tags = models.TextField(null=True, blank=True)
-    website = models.URLField()
+    website = models.URLField(null=True, blank=True)
     logo = models.ImageField(upload_to="logo/", null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     insta = models.URLField(null=True, blank=True)
