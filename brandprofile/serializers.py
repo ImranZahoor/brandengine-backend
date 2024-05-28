@@ -1,8 +1,10 @@
+from drf_extra_fields.fields import Base64ImageField
 from rest_framework import serializers
 from brandprofile.models import BrandProfile, Category
 
 
 class BrandProfileSerializer(serializers.ModelSerializer):
+    logo = Base64ImageField(required=False)
 
     class Meta:
         model = BrandProfile
