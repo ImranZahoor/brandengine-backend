@@ -93,6 +93,11 @@ class UploadCSVView(APIView):
             if errors:
                 return Response({"errors": errors}, status=400)
             for entry in df_json:
+                if not entry["Title"]:
+                    return Response(
+                        {"errors": ["Title is missing in one or more rows."]},
+                        status=status.HTTP_400_BAD_REQUEST,
+                    )
                 drafts = DraftProfile.objects.filter(
                     brand_name=entry["Brand Name"],
                     title=entry["Title"],
