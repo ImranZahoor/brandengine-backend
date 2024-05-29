@@ -8,9 +8,10 @@ class RatingsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Ratings
-        fields = ("description", "proof_of_order", "brand_profile", "rating")
+        fields = ("id", "description", "proof_of_order", "brand_profile", "rating")
         extra_kwargs = {
             "proof_of_order": {"required": True},
             "brand_profile": {"required": True},
             "rating": {"required": True},
+            "id": {"read_only": True},
         }
