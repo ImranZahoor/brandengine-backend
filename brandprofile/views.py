@@ -1,15 +1,15 @@
 import json
-
 from drf_spectacular.utils import extend_schema
 from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from brandprofile.filters import ProfileFilters
 from brandprofile.forms import FileUploadForm
 from brandprofile.models import BrandProfile, Category
 from brandprofile.serializers import BrandProfileSerializer, CategorySerializer
 import pandas as pd
-
+from django_filters.rest_framework import DjangoFilterBackend
 from utils.pagination import CustomPageNumberPagination
 
 
@@ -18,6 +18,8 @@ class BrandProfileViewSet(viewsets.ModelViewSet):
     queryset = BrandProfile.objects.all()
     serializer_class = BrandProfileSerializer
     permission_classes = [IsAuthenticated]
+    filter_backends = (DjangoFilterBackend,)
+    filterset_class = ProfileFilters
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
