@@ -7,6 +7,7 @@ from rest_framework.views import APIView
 from brandprofile.filters import ProfileFilters
 from brandprofile.forms import FileUploadForm
 from brandprofile.models import BrandProfile, Category
+from brandprofile.permissions import IsAuthenticatedOrReadOnlyForList
 from brandprofile.serializers import BrandProfileSerializer, CategorySerializer
 import pandas as pd
 from django_filters.rest_framework import DjangoFilterBackend
@@ -17,7 +18,7 @@ class BrandProfileViewSet(viewsets.ModelViewSet):
     pagination_class = CustomPageNumberPagination
     queryset = BrandProfile.objects.all()
     serializer_class = BrandProfileSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnlyForList]
     filter_backends = (DjangoFilterBackend,)
     filterset_class = ProfileFilters
 
