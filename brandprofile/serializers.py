@@ -24,6 +24,8 @@ class BrandProfileSerializer(serializers.ModelSerializer):
             "email",
             "owner",
             "category",
+            "facebook_followers",
+            "insta_followers",
         )
 
 

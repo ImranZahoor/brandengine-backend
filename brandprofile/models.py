@@ -41,6 +41,8 @@ class BrandProfile(Timestamp):
     )
     phone = models.CharField(validators=[phone_regex], max_length=17, blank=True)
     email = models.EmailField(null=True, blank=True)
+    insta_followers = models.PositiveIntegerField(null=True, blank=True)
+    facebook_followers = models.PositiveIntegerField(null=True, blank=True)
     owner = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
