@@ -24,6 +24,13 @@ def decodeDesignImage(data):
         data = base64.b64decode(data.encode("UTF-8"))
         buf = io.BytesIO(data)
         img = Image.open(buf)
+
+        # Convert image to RGB if it has an alpha channel
+        if img.mode in ("RGBA", "LA") or (
+            hasattr(img, "info") and "transparency" in img.info
+        ):
+            img = img.convert("RGB")
+
         return img
     except:
         return None
@@ -147,6 +154,7 @@ class UploadCSVView(APIView):
                     #         charset=None,
                     #     )
                     if entry["logo_url"]:
+                        check = entry["logo_url"]
                         img = decodeDesignImage(entry["logo_url"])
                         if img:
                             img_io = io.BytesIO()
