@@ -2,7 +2,7 @@ import json
 
 from drf_spectacular.utils import extend_schema
 from rest_framework import viewsets, status
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from brandprofile.forms import FileUploadForm
@@ -17,7 +17,7 @@ class BrandProfileViewSet(viewsets.ModelViewSet):
     pagination_class = CustomPageNumberPagination
     queryset = BrandProfile.objects.all()
     serializer_class = BrandProfileSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
