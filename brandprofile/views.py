@@ -1,7 +1,7 @@
 import json
 from drf_spectacular.utils import extend_schema
 from rest_framework import viewsets, status
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from brandprofile.filters import ProfileFilters
@@ -40,7 +40,7 @@ class BrandProfileViewSet(viewsets.ModelViewSet):
     pagination_class = CustomPageNumberPagination
     queryset = BrandProfile.objects.all()
     serializer_class = BrandProfileSerializer
-    permission_classes = [IsAuthenticatedOrReadOnlyForList]
+    permission_classes = [IsAuthenticatedOrReadOnly]
     filter_backends = (DjangoFilterBackend,)
     filterset_class = ProfileFilters
 
