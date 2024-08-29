@@ -1,9 +1,11 @@
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.decorators import action
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from ratings.models import Ratings
 from ratings.serializers import RatingsSerializer
+from django.db.models import Q
 
 class RatingsViewSet(viewsets.ModelViewSet):
     queryset = Ratings.objects.all()
@@ -13,9 +15,17 @@ class RatingsViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
+    @action(detail=False, methods=['get'], permission_classes=[IsAuthenticated])
+    def my_ratings(self, request):
+        user = request.user
+        user_ratings = self.get_queryset().filter(user=user)
+        serializer = self.get_serializer(user_ratings, many=True)
+        return Response(serializer.data)
+
+class UserRatingsViewSet(viewsets.ReadOnlyModelViewSet):
+    serializer_class = RatingsSerializer
+    permission_classes = [IsAuthenticated]
+
     def get_queryset(self):
-        queryset = super().get_queryset()
-        brand_id = self.request.query_params.get('brand_id', None)
-        if brand_id is not None:
-            queryset = queryset.filter(brand_profile_id=brand_id)
-        return queryset
+        user = self.request.user
+        return Ratings.objects.filter(user=user)
