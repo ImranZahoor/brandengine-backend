@@ -1,7 +1,6 @@
 from dj_rest_auth.registration.serializers import RegisterSerializer
 from django.conf import settings
 from django.core.validators import RegexValidator
-import django.db.models
 from drf_extra_fields.fields import Base64ImageField
 from rest_framework import serializers
 from allauth.account import app_settings as allauth_account_settings
@@ -36,7 +35,6 @@ def email_address_exists(email, exclude_user=None):
 
 class CustomRegisterSerializer(RegisterSerializer):
     first_name = serializers.CharField(required=True)
-    last_name=serializers.CharField(required=True)
     phone_regex = RegexValidator(
         regex=r"^\+?1?\d{9,15}$",
         message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.",
@@ -69,11 +67,9 @@ class CustomRegisterSerializer(RegisterSerializer):
 
     def get_cleaned_data(self):
         data_dict = super().get_cleaned_data()
-        data_dict["first_name"] = self.validated_data.get("first_name", "")
         data_dict["phone"] = self.validated_data.get("phone", "")
         data_dict["email"] = self.validated_data.get("email").lower()
         data_dict["is_brand"] = self.validated_data.get("is_brand")
-        data_dict["last_name"]=self.validated_data.get("last_name", "")
 
         return data_dict
 
@@ -81,22 +77,13 @@ class CustomRegisterSerializer(RegisterSerializer):
         adapter = get_adapter()
         user = adapter.new_user(request)
         self.cleaned_data = self.get_cleaned_data()
-
         user.is_brand = self.cleaned_data.get("is_brand", False)
-        user.first_name = self.cleaned_data.get("first_name", "")
-        user.last_name =self.validated_data.get("last_name", "")
-        user.phone = self.cleaned_data.get("phone", "")
-        user.email = self.cleaned_data.get("email").lower()
-
         user = adapter.save_user(request, user, self, commit=False)
         user.last_login = None
         user.save()
-
         self.custom_signup(request, user)
         setup_user_email(request, user, [])
-        
         return user
-
 
     def save_user(self, request, user, form, commit=True):
         """
