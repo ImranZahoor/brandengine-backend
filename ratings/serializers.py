@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from ratings.models import Ratings
 from users.serializers import UserSerializer
+from drf_extra_fields.fields import Base64ImageField
 
 class RatingsSerializer(serializers.ModelSerializer):
     user = UserSerializer()
