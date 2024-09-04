@@ -24,7 +24,7 @@ class BrandProfile(Timestamp):
         Category, on_delete=models.CASCADE, related_name="brand_category"
     )
     search_tags = models.TextField(null=True, blank=True)
-    website = models.URLField()
+    website = models.URLField(null=True, blank=True)
     logo = models.ImageField(upload_to="logo/", null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     insta = models.URLField(null=True, blank=True)
@@ -41,6 +41,8 @@ class BrandProfile(Timestamp):
     )
     phone = models.CharField(validators=[phone_regex], max_length=17, blank=True)
     email = models.EmailField(null=True, blank=True)
+    insta_followers = models.PositiveIntegerField(null=True, blank=True)
+    facebook_followers = models.PositiveIntegerField(null=True, blank=True)
     owner = models.ForeignKey(
         User,
         on_delete=models.CASCADE,

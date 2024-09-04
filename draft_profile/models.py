@@ -18,7 +18,7 @@ class DraftProfile(Timestamp):
     query = models.CharField(max_length=255, blank=False, null=False)
     brand_name = models.CharField(max_length=255, blank=True, null=True)
     url = models.URLField(null=True, blank=True)
-    logo = models.CharField(max_length=255, blank=True, null=True, default=None)
+    logo = models.ImageField(upload_to="draft/", null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     insta = models.URLField(null=True, blank=True)
     facebook = models.URLField(null=True, blank=True)

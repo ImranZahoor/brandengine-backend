@@ -46,6 +46,7 @@ class MigrateBrandSerializer(serializers.Serializer):
                 facebook=profile.facebook,
                 # owner = self.request.user
                 website=profile.url,
+                logo=profile.logo,
             )
 
 

@@ -2,6 +2,7 @@ from dj_rest_auth.registration.serializers import RegisterSerializer
 from django.conf import settings
 from django.core.validators import RegexValidator
 import django.db.models
+from drf_extra_fields.fields import Base64ImageField
 from rest_framework import serializers
 from allauth.account import app_settings as allauth_account_settings
 from allauth.account.adapter import get_adapter
@@ -263,6 +264,8 @@ class LoginSerializer(serializers.Serializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
+    profile_picture = Base64ImageField(required=False)
+
     class Meta:
         model = User
         fields = [

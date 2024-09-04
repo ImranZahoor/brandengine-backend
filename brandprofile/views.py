@@ -1,16 +1,39 @@
 import json
-
 from drf_spectacular.utils import extend_schema
 from rest_framework import viewsets, status
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from brandprofile.filters import ProfileFilters
 from brandprofile.forms import FileUploadForm
 from brandprofile.models import BrandProfile, Category
+from brandprofile.permissions import IsAuthenticatedOrReadOnlyForList
 from brandprofile.serializers import BrandProfileSerializer, CategorySerializer
 import pandas as pd
-
+from django_filters.rest_framework import DjangoFilterBackend
 from utils.pagination import CustomPageNumberPagination
+from django.core.files.uploadedfile import InMemoryUploadedFile
+
+import base64
+import io
+from PIL import Image
+
+
+def decodeDesignImage(data):
+    try:
+        data = base64.b64decode(data.encode("UTF-8"))
+        buf = io.BytesIO(data)
+        img = Image.open(buf)
+
+        # Convert image to RGB if it has an alpha channel
+        if img.mode in ("RGBA", "LA") or (
+            hasattr(img, "info") and "transparency" in img.info
+        ):
+            img = img.convert("RGB")
+
+        return img
+    except:
+        return None
 
 
 class BrandProfileViewSet(viewsets.ModelViewSet):
@@ -18,12 +41,14 @@ class BrandProfileViewSet(viewsets.ModelViewSet):
     queryset = BrandProfile.objects.all()
     serializer_class = BrandProfileSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
+    filter_backends = (DjangoFilterBackend,)
+    filterset_class = ProfileFilters
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnlyForList]
 
 
 class UploadCSVView(APIView):
@@ -55,6 +80,8 @@ class UploadCSVView(APIView):
                 "category",
                 "logo_url",
                 "tags",
+                "Instagram Followers",
+                "Facebook Followers",
             ]
             file_name = file.name
             file_extension = file_name.split(".")[-1]
@@ -89,6 +116,9 @@ class UploadCSVView(APIView):
                     website=entry["website"],
                     facebook=entry["facebook_url"],
                     insta=entry["insta_url"],
+                    # facebook_followers=entry["Facebook Followers"],
+                    # insta_followers=entry["Instagram Followers"],
+                    # logo=entry["logo_url"],
                 )
                 if brand.exists():
                     pass
@@ -109,7 +139,40 @@ class UploadCSVView(APIView):
                         description=entry["scrap_desc"],
                         category=category[0],
                         owner_id=request.user.id,
+                        facebook_followers=entry["Facebook Followers"],
+                        insta_followers=entry["Instagram Followers"],
                     )
+                    # if entry["logo_url"]:
+                    #     img = decodeDesignImage(entry["logo_url"])
+                    #     img_io = io.BytesIO()
+                    #     img.save(img_io, format="JPEG")
+                    #     new_brand.image = InMemoryUploadedFile(
+                    #         img_io,
+                    #         field_name=None,
+                    #         name="token" + ".jpg",
+                    #         content_type="image/jpeg",
+                    #         size=img_io.tell,
+                    #         charset=None,
+                    #     )
+                    if entry["logo_url"]:
+                        check = entry["logo_url"]
+                        img = decodeDesignImage(entry["logo_url"])
+                        if img:
+                            img_io = io.BytesIO()
+                            img.save(img_io, format="JPEG")
+                            img_io.seek(0)  # Ensure the stream position is at the start
+                            new_brand.logo.save(
+                                f"{entry['company name']}_logo.jpg",
+                                InMemoryUploadedFile(
+                                    img_io,
+                                    field_name=None,
+                                    name=f"{entry['company name']}_logo.jpg",
+                                    content_type="image/jpeg",
+                                    size=img_io.getbuffer().nbytes,
+                                    charset=None,
+                                ),
+                                save=True,
+                            )
                     new_brand.save()
             return Response(
                 {"message": "Data Added Successfully"}, status=status.HTTP_201_CREATED

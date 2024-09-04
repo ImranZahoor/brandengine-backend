@@ -106,3 +106,5 @@ brandsearch.pem
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
+
+db.sqlite3
