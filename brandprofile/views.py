@@ -13,47 +13,38 @@ import pandas as pd
 from django_filters.rest_framework import DjangoFilterBackend
 from utils.pagination import CustomPageNumberPagination
 from django.core.files.uploadedfile import InMemoryUploadedFile
-
 import base64
 import io
 from PIL import Image
-
 
 def decodeDesignImage(data):
     try:
         data = base64.b64decode(data.encode("UTF-8"))
         buf = io.BytesIO(data)
         img = Image.open(buf)
-
         # Convert image to RGB if it has an alpha channel
         if img.mode in ("RGBA", "LA") or (
             hasattr(img, "info") and "transparency" in img.info
         ):
             img = img.convert("RGB")
-
         return img
     except:
         return None
-
-
+    
 class BrandProfileViewSet(viewsets.ModelViewSet):
     pagination_class = CustomPageNumberPagination
     queryset = BrandProfile.objects.all()
     serializer_class = BrandProfileSerializer
+    permission_classes = [IsAuthenticated]
     permission_classes = [IsAuthenticatedOrReadOnly]
-    filter_backends = (DjangoFilterBackend,)
-    filterset_class = ProfileFilters
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    permission_classes = [IsAuthenticatedOrReadOnlyForList]
-
-
+    permission_classes = [IsAuthenticated]
 class UploadCSVView(APIView):
     permission_classes = [IsAuthenticated]
-
     @extend_schema(
         operation_id="upload_file",
         request={
@@ -136,13 +127,13 @@ class UploadCSVView(APIView):
                         insta=entry["insta_url"],
                         logo=entry["logo_url"],
                         search_tags=entry["tags"],
-                        description=entry["scrap_desc"],
                         category=category[0],
                         owner_id=request.user.id,
                         facebook_followers=entry["Facebook Followers"],
                         insta_followers=entry["Instagram Followers"],
+                        description=entry["scrap_desc"],
                     )
-                    # if entry["logo_url"]:
+                     # if entry["logo_url"]:
                     #     img = decodeDesignImage(entry["logo_url"])
                     #     img_io = io.BytesIO()
                     #     img.save(img_io, format="JPEG")
