@@ -27,7 +27,7 @@ class User(AbstractUser, Timestamp):
     )
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ["username"]
+    REQUIRED_FIELDS = ["    "]
 
     class Meta:
         verbose_name = _("user")

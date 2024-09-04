@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-
 from brandprofile.models import BrandProfile
 from utils.model_utils import Timestamp
 from django.core.validators import MinValueValidator, MaxValueValidator
@@ -18,7 +17,6 @@ class Ratings(Timestamp):
     brand_profile = models.ForeignKey(
         BrandProfile, on_delete=models.CASCADE, related_name="brandprofile_rating"
     )
-
     class Meta:
         verbose_name = "Rating"
         verbose_name_plural = "Ratings"

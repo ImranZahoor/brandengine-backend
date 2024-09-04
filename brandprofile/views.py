@@ -106,6 +106,7 @@ class UploadCSVView(APIView):
                         insta=entry["insta_url"],
                         logo=entry["logo_url"],
                         search_tags=entry["tags"],
+                        description=entry["scrap_desc"],
                         category=category[0],
                         owner_id=request.user.id,
                     )
