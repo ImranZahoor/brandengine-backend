@@ -42,7 +42,7 @@ class BrandProfileViewSet(viewsets.ModelViewSet):
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 class UploadCSVView(APIView):
     permission_classes = [IsAuthenticated]
     @extend_schema(

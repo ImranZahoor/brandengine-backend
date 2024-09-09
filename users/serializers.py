@@ -70,7 +70,7 @@ class CustomRegisterSerializer(RegisterSerializer):
         data_dict["phone"] = self.validated_data.get("phone", "")
         data_dict["email"] = self.validated_data.get("email").lower()
         data_dict["is_brand"] = self.validated_data.get("is_brand")
-
+        data_dict["first_name"]=self.validated_data.get("first_name")
         return data_dict
 
     def save(self, request):

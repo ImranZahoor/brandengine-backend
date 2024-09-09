@@ -4,7 +4,7 @@ from users.serializers import UserSerializer
 from drf_extra_fields.fields import Base64ImageField
 
 class RatingsSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
+    user = UserSerializer(read_only=True)
     proof_of_order = Base64ImageField(required=False)
 
 
